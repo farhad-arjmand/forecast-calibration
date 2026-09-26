@@ -6,7 +6,13 @@ Small, deterministic diagnostics for binary probability forecasts: Brier score, 
 
 ## Get started
 
-GitHub source is available; **npm publication is pending**.
+Install the ESM package:
+
+```sh
+npm install @farhadarjmand/forecast-calibration
+```
+
+To build and test from source:
 
 ```sh
 git clone https://github.com/farhad-arjmand/forecast-calibration.git
@@ -16,7 +22,7 @@ npm run check
 ```
 
 ```js
-import { evaluateCalibration } from './dist/index.js';
+import { evaluateCalibration } from '@farhadarjmand/forecast-calibration';
 
 const report = evaluateCalibration([
   { p: 0.8, y: 1, day: '2024-01-01' },
@@ -28,7 +34,7 @@ const report = evaluateCalibration([
 console.log(report.brier, report.auc, report.brierSkillInterval95);
 ```
 
-Planned package name: `@farhadarjmand/forecast-calibration`. Registry availability is not claimed.
+Package: [`@farhadarjmand/forecast-calibration`](https://www.npmjs.com/package/@farhadarjmand/forecast-calibration).
 
 ## Input and exclusions
 
