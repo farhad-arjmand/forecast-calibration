@@ -49,8 +49,9 @@ export function logLoss(samples: readonly Forecast[], epsilon = 1e-12): number |
   if (!Number.isFinite(epsilon) || epsilon <= 0 || epsilon >= 0.5) throw new RangeError('Invalid log-loss epsilon');
   if (!samples.length) return null;
   return samples.reduce((sum, s) => {
-    const p = Math.max(epsilon, Math.min(1 - epsilon, s.p));
-    return sum - (s.y === 1 ? Math.log(p) : Math.log1p(-p));
+    // Clip the observed class probability directly: 1 - epsilon may round to 1.
+    const observed = s.y === 1 ? s.p : 1 - s.p;
+    return sum - Math.log(Math.max(epsilon, Math.min(1 - epsilon, observed)));
   }, 0) / samples.length;
 }
 
@@ -90,7 +91,8 @@ export function reliabilityBins(samples: readonly Forecast[], count = 10): Relia
   return bins;
 }
 function skill(score: number | null, baseline: number | null): number | null {
-  return score !== null && baseline !== null && baseline > 0 ? 1 - score / baseline : null;
+  const value = score !== null && baseline !== null && baseline > 0 ? 1 - score / baseline : null;
+  return value !== null && Number.isFinite(value) ? value : null;
 }
 function rng(seed: number) {
   let state = (seed >>> 0) || 1;

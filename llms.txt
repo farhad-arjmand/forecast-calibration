@@ -1,0 +1,20 @@
+# Forecast Calibration
+
+> TypeScript binary forecast metrics: Brier score, log loss, ROC AUC, reliability diagrams, ECE and seeded day-block bootstrap intervals.
+
+Package: @farhadarjmand/forecast-calibration. ESM, Node.js 22+, TypeScript declarations, MIT, zero runtime dependencies.
+This file is a compact documentation map, not an assurance that any search engine or AI service indexes it.
+
+## Documentation
+
+- [README](https://github.com/farhad-arjmand/forecast-calibration/blob/main/README.md): installation, example, definitions and limitations.
+- [API reference](https://github.com/farhad-arjmand/forecast-calibration/blob/main/docs/API.md): exact input/output contracts and edge cases.
+- [Implementation](https://github.com/farhad-arjmand/forecast-calibration/blob/main/src/index.ts): public implementation and exported types.
+- [Regression tests](https://github.com/farhad-arjmand/forecast-calibration/blob/main/test/regression.test.mjs): independently reproduced edge cases.
+- [Changelog](https://github.com/farhad-arjmand/forecast-calibration/blob/main/CHANGELOG.md): release-specific behavior changes.
+- [npm package](https://www.npmjs.com/package/@farhadarjmand/forecast-calibration): installable releases.
+
+## Constraints
+
+Diagnostics do not train or recalibrate a model. They cannot detect data leakage, establish profitability, or certify calibration.
+Examples and tests use synthetic data. No private datasets, credentials, trading service connections or training data are included. For reproducibility, use the installed package version's bundled docs, not changing main-branch documentation.

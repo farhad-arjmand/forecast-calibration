@@ -2,7 +2,19 @@
 
 Small, deterministic diagnostics for binary probability forecasts: Brier score, log loss, tie-aware ROC AUC, reliability bins, ECE, and a seeded day-block bootstrap.
 
-**Experimental v0.1.0 · TypeScript · ESM · Node.js 22+ · MIT · zero runtime dependencies**
+**Experimental v0.1.1 · TypeScript · ESM · Node.js 22+ · MIT · zero runtime dependencies**
+
+[![CI](https://github.com/farhad-arjmand/forecast-calibration/actions/workflows/ci.yml/badge.svg)](https://github.com/farhad-arjmand/forecast-calibration/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/%40farhadarjmand%2Fforecast-calibration)](https://www.npmjs.com/package/@farhadarjmand/forecast-calibration)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/farhad-arjmand/forecast-calibration/blob/main/LICENSE)
+
+[API reference](https://github.com/farhad-arjmand/forecast-calibration/blob/main/docs/API.md) · [Changelog](https://github.com/farhad-arjmand/forecast-calibration/blob/main/CHANGELOG.md) · [Documentation map](https://github.com/farhad-arjmand/forecast-calibration/blob/main/llms.txt) · [Report an issue](https://github.com/farhad-arjmand/forecast-calibration/issues/new/choose)
+
+## When to use this
+
+Evaluate binary classifier probabilities, prepare reliability diagrams, and compare frozen forecasts against an independently specified constant baseline. Applicable to machine-learning evaluation and probabilistic forecasting, not only finance.
+
+Diagnostics do not train or recalibrate a model. They cannot detect data leakage, establish profitability, or certify calibration.
 
 ## Get started
 
@@ -49,7 +61,7 @@ Forecasts must have been frozen before their outcomes. This library cannot verif
 | Output | Meaning |
 | --- | --- |
 | brier | Mean (p − y)²; lower is better. |
-| brierSkill | 1 − Brier / constant-baseline Brier; null if baseline error is zero. |
+| brierSkill | 1 − Brier / constant-baseline Brier; null if baseline error is zero or the ratio is not representable as a finite number. |
 | logLoss | Natural-log loss, clipping only this metric to epsilon (default 1e-12). |
 | auc | Rank discrimination, O(n log n); ties receive half credit. Null for one class, 0.5 for constant scores when both classes exist. |
 | bins / ece | Approximately equal-count reliability bins without splitting tied scores; ECE depends on binning. |
@@ -69,7 +81,7 @@ The baseline probability is supplied explicitly; do not choose it from the evalu
 
 Options: required `baselineProbability`; optional `bins` (1–1000), `bootstrapResamples` (0–10000, default 1000), unsigned 32-bit `seed` (default 1), and `logLossEpsilon`.
 
-A bootstrap resamples the same number of day blocks with replacement, retaining every row of each sampled day. It estimates a **sample-weighted** statistic, not an equal-day-weighted one. Day keys are sorted before resampling. At least two blocks are required to emit an interval; two is a mathematical minimum, not a statistical adequacy claim. Invalid zero-denominator draws are counted via requested/valid and PARTIAL status. Setting resamples to zero disables intervals.
+A bootstrap resamples the same number of day blocks with replacement, retaining every row of each sampled day. It estimates a **sample-weighted** statistic, not an equal-day-weighted one. Day keys are sorted before resampling. At least two blocks are required to emit an interval; two is a mathematical minimum, not a statistical adequacy claim. Invalid zero-denominator or non-finite draws are counted via requested/valid and PARTIAL status. Setting resamples to zero disables intervals.
 
 Blocks must be representative and sufficiently independent for the intended inference. Serial dependence across days, overlapping labels, selection bias, tuning, and multiple tests require an appropriate study design outside this package. Small samples can produce misleadingly narrow or degenerate intervals.
 
@@ -81,4 +93,10 @@ It does not train a calibrator, certify probabilities, infer a trading edge, sel
 
 Tests compare metrics against hand values and an independent pairwise AUC oracle, cover tie handling, strict date screening, raw/binned decomposition, deterministic block resampling, empty samples, and undefined baselines. Fixtures are synthetic.
 
-See [NOTICE.md](NOTICE.md), [CONTRIBUTING.md](CONTRIBUTING.md), and [LICENSE](LICENSE).
+See [Provenance](https://github.com/farhad-arjmand/forecast-calibration/blob/main/NOTICE.md), [Contributing](https://github.com/farhad-arjmand/forecast-calibration/blob/main/CONTRIBUTING.md), and [MIT license](https://github.com/farhad-arjmand/forecast-calibration/blob/main/LICENSE).
+
+## Integration and reproducibility
+
+ESM named imports only; tested on Node.js 22 and 24. Types are bundled. Browser and CommonJS support are not claimed. The package includes `docs/API.md` and `llms.txt` so humans and coding assistants can inspect the installed version's contract offline. A documentation map does not guarantee search ranking or AI indexing.
+
+For contributors, `npm run test:package` installs a freshly packed tarball in a temporary consumer, executes the README example, checks a functional assertion and type-checks imports by the public package name. Pin the package version and retain your input identity and options when comparing results.

@@ -1,7 +1,7 @@
 {
   "name": "@farhadarjmand/forecast-calibration",
-  "version": "0.1.0",
-  "description": "Probability forecast diagnostics with tie-aware AUC and reproducible day-block bootstrap.",
+  "version": "0.1.1",
+  "description": "TypeScript binary forecast metrics: Brier score, log loss, ROC AUC, reliability diagrams, ECE and seeded day-block bootstrap intervals.",
   "type": "module",
   "license": "MIT",
   "author": "Farhad Arjmand",
@@ -27,7 +27,10 @@
   },
   "files": [
     "dist",
+    "docs/API.md",
+    "llms.txt",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE",
     "NOTICE.md"
   ],
@@ -38,15 +41,22 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node --test test/*.test.mjs && tsc -p test/tsconfig.json",
     "check": "npm test && node examples/basic.mjs && node scripts/check-package.mjs",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "test:package": "npm run build && node scripts/smoke-tarball.mjs"
   },
   "devDependencies": {
     "typescript": "5.9.3"
   },
   "keywords": [
     "typescript",
-    "quantitative-finance",
-    "research",
-    "forecast-calibration"
+    "forecast-calibration",
+    "probability-calibration",
+    "brier-score",
+    "log-loss",
+    "roc-auc",
+    "reliability-diagram",
+    "bootstrap",
+    "machine-learning",
+    "model-evaluation"
   ]
 }
